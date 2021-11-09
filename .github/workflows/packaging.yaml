@@ -1,0 +1,31 @@
+name: ABC package builder
+
+on:
+  release:
+    types: [published]
+
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name : clone EAAS 
+        uses: actions/checkout@v2
+        with:
+          repository: /Maziar110/abc
+          path: abc
+
+      - name: Go environment
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.16.2
+
+      - name: Show directory before
+        run: ls ./abc/cmd/abc/...
+
+      - name: Package Linux
+        run: go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./abc/cmd/abc/...
+      
+      - name: show afer 
+        run: ls ./abc/cmd/abc/...
