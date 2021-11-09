@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name : clone EAAS 
+      - name : clone ABC 
         uses: actions/checkout@v2
         with:
-          repository: /Maziar110/abc
           path: abc
 
       - name: Go environment
