@@ -21,10 +21,10 @@ jobs:
           go-version: 1.16.2
 
       - name: Show directory before
-        run: ls ./
+        run: cd abc && ls ./
 
       - name: Package Linux
-        run: go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./abc/cmd/abc/...
+        run: go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
       
       - name: show afer 
         run: ls ./abc/cmd/abc/...
