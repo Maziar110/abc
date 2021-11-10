@@ -15,8 +15,6 @@ jobs:
 
       - name : clone ABC 
         uses: actions/checkout@v2
-        with:
-          path: abc
 
       - name: Go environment
         uses: actions/setup-go@v2.1.3
