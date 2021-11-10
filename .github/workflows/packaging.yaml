@@ -65,8 +65,8 @@ jobs:
         run: cd abc && zip -r "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip" "abc-${{github.event.release.tag_name}}"
 
       - name: show where we are
-        run: ls -l && ls $(pwd)
-        
+        run: ls -l && ls $(pwd)/abc
+
       # Uploading the package to it's release based on release tag
       - name: Upload binaries to release for Linux and windows
         if: ${{matrix.os != 'amd64' && matrix.os != 'arm4'}} 
