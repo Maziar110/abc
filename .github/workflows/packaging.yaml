@@ -9,7 +9,7 @@ jobs:
   packer:
     strategy:
       matrix:
-        os: ['linux']
+        os: ['linux', 'amd64', 'arm64', 'windows']
     runs-on: ubuntu-latest
     steps:
 
@@ -25,12 +25,59 @@ jobs:
 
       - name: Show directory before
         run: cd abc && ls ./
-        
-      - name: Package Linux
-        run: cd abc && ls -l && go build -o "abc-${{matrix.os}}-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
+
+
+      # building go package based on os version - we use release tag for version
+      - name: ABC Package for Linux and Darwin-amd64
+        if: ${{matrix.os != 'windows' && matrix.os != 'arm4'}} 
+        run: cd abc && ls -l && go build -o "abc-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
       
+      - name: Package for Windows
+        if: ${{matrix.os  == 'windows'}}
+        run: cd abc && ls -l && go build -o "abc-${{github.event.release.tag_name}}.exe" -tags 'oss' ./cmd/abc/...
+
+      - name: Package for Darwin-Arm64
+        if: ${{matrix.os  == 'arm64'}}
+        run: cd abc && ls -l && go build -o "abc-${{matrix.os}}-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
+
       - name: show afer 
         run: cd abc && ls -la && ls -la ./cmd/abc/
 
+
+      # creating zip files for each os
       - name: Zip
-        run: apt update && 
+        run: apt update && sudo apt -y install zip
+      
+      - name: Packing into zip for Linux 
+        if: ${{matrix.os == 'linux'}} 
+        run: cd abc && zip -r "abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip" "abc-${{github.event.release.tag_name}}"
+
+      - name: Packing into zip for windows
+        if: ${{matrix.os  == 'windows'}}
+        run: cd abc && zip -r "abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip" "abc-${{github.event.release.tag_name}}.exe"
+
+      - name: Packing into zip for Darwin-arm64
+        if: ${{matrix.os  == 'arm64'}}
+        run: cd abc && zip -r "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip" "abc-${{matrix.os}}-${{github.event.release.tag_name}}"
+
+      - name: Packing into zip for Darwin-amd64
+        if: ${{matrix.os == 'amd64'}} 
+        run: cd abc && zip -r "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip" "abc-${{github.event.release.tag_name}}"
+
+
+      # Uploading the package to it's release based on release tag
+      - name: Upload binaries to release for Linux and windows
+        if: ${{matrix.os != 'amd64' && matrix.os != 'arm4'}} 
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: abc/"abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          asset_name: "abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          tag: ${{github.event.release.tag_name}}
+      
+      - name: Upload binaries to release for amd64 and arm64
+        if: ${{matrix.os == 'amd64' || matrix.os == 'arm64' }} 
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: abc/"abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          asset_name: "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          tag: ${{github.event.release.tag_name}}
