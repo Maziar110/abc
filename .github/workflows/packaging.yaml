@@ -70,6 +70,7 @@ jobs:
         if: ${{matrix.os != 'amd64' && matrix.os != 'arm4'}} 
         uses: svenstaro/upload-release-action@v2
         with:
+          repo_token: ${{secrets.RELEASER}}
           file: abc/"abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           asset_name: "abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           tag: ${{github.event.release.tag_name}}
@@ -78,6 +79,7 @@ jobs:
         if: ${{matrix.os == 'amd64' || matrix.os == 'arm64' }} 
         uses: svenstaro/upload-release-action@v2
         with:
+          repo_token: ${{secrets.RELEASER}}
           file: abc/"abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           asset_name: "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           tag: ${{github.event.release.tag_name}}
