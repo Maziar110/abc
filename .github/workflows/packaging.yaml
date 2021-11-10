@@ -7,6 +7,9 @@ on:
 
 jobs:
   packer:
+    strategy:
+      matrix:
+        os: ['linux']
     runs-on: ubuntu-latest
     steps:
 
@@ -22,12 +25,12 @@ jobs:
 
       - name: Show directory before
         run: cd abc && ls ./
-
-      # - name: install go modules
-      #   run: cd abc && go mod tidy
-
+        
       - name: Package Linux
-        run: cd abc && ls -l && go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
+        run: cd abc && ls -l && go build -o "abc-${{matrix.os}}-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
       
       - name: show afer 
-        run: ls ./cmd/abc/...
+        run: cd abc && ls -la && ls -la ./cmd/abc/
+
+      - name: Zip
+        run: apt update && 
