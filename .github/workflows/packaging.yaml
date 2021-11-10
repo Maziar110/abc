@@ -67,7 +67,7 @@ jobs:
 
       # Uploading the package to it's release based on release tag
       - name: Upload binaries to release for Linux and windows
-        if: ${{matrix.os != 'amd64' && matrix.os != 'arm4'}} 
+        if: ${{matrix.os != 'amd64' && matrix.os != 'arm64'}} 
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.RELEASER}}
