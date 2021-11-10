@@ -46,7 +46,7 @@ jobs:
 
       # creating zip files for each os
       - name: Zip
-        run: apt update && sudo apt -y install zip
+        run: sudo -y apt update && sudo apt -y install zip
       
       - name: Packing into zip for Linux 
         if: ${{matrix.os == 'linux'}} 
