@@ -24,7 +24,7 @@ jobs:
         run: cd abc && ls ./
 
       - name: install go modules
-        run: go mod tidy
+        run: ls -la && go mod tidy
 
       - name: Package Linux
         run: go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
