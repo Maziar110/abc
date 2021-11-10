@@ -73,7 +73,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.RELEASER}}
-          file: abc/"abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          file: $(pwd)/abc/"abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           asset_name: "abc-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           tag: ${{github.event.release.tag_name}}
       
@@ -82,6 +82,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{secrets.RELEASER}}
-          file: abc/"abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
+          file: $(pwd)/abc/"abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           asset_name: "abc-darwin-${{matrix.os}}-${{github.event.release.tag_name}}.zip"
           tag: ${{github.event.release.tag_name}}
