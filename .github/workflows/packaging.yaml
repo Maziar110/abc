@@ -23,11 +23,11 @@ jobs:
       - name: Show directory before
         run: cd abc && ls ./
 
-      - name: install go modules
-        run: cd abc && go mod tidy
+      # - name: install go modules
+      #   run: cd abc && go mod tidy
 
       - name: Package Linux
         run: cd abc && ls -l && go build -o "abc-linux-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
       
       - name: show afer 
-        run: ls ./abc/cmd/abc/...
+        run: ls ./cmd/abc/...
