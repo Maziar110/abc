@@ -22,7 +22,7 @@ jobs:
           go-version: 1.16.2
 
       - name: Show directory before
-        run: cd abc && ls ./
+        run:  ls ./ && echo $(pwd)
 
 
       # building go package based on os version - we use release tag for version
