@@ -49,7 +49,7 @@ jobs:
       
       - name: Package for Darwin-AMD64
         if: ${{matrix.os  == 'amd64'}}
-        run: go build -o "abc-${{matrix.os}}-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
+        run: go build -o "abc-${{github.event.release.tag_name}}" -tags 'oss' ./cmd/abc/...
         env:
           GOOS: darwin
           GOARCH: amd64
